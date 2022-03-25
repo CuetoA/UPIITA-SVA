@@ -1,11 +1,15 @@
 '''
 Filtro Maximo con scipy
 '''
+import os
 import numpy as np
 import cv2 as cv
-import scipy.ndimage
+import scipy
 
-Img=cv.imread('Lena_Ruido.jpg',1)
+
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname , '../img/Lena_Ruido.jpg')
+Img=cv.imread(filename,1)
 
 '''cv.imshow('Lena Ruido', Img)'''
 img_gray=cv.cvtColor(Img, cv.COLOR_BGR2GRAY)

@@ -1,11 +1,13 @@
+import os
 import cv2 as cv
 import numpy as np
 
 ddepth = cv.CV_16S
 kernelSice = 7
 
-img1 = cv.imread('./Lena2.jpg', 0) # 0 BN, 1 Color
-#img1 = cv.imread('Lena2.jpg', 0) # 0 BN, 1 Color
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname , '../img/Lena2.jpg')
+img1 = cv.imread(filename, 0) # 0 BN, 1 Color
 img1l = cv.Laplacian(img1 , ddepth, ksize = kernelSice )
 
 

@@ -1,7 +1,10 @@
+import os
 import cv2 as cv
 import numpy as np
 
-img = cv.imread('formas-colores.jpg',1)
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname , '../img/formas-colores.jpg')
+img = cv.imread(filename,1)
 cv.imshow('nombre', img)
 
 b,g,r = cv.split(img)
