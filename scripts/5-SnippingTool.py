@@ -22,8 +22,17 @@ def region(event, x, y, flags, param):
         current_coordenate = (x,y)
         cv.rectangle(img, first_coordenate , current_coordenate, color, thick)
     elif event == cv.EVENT_LBUTTONUP:
-        if x > x1 and y > y1 and x-x1 > min_with:
-            img_cut = img_copy[y1:y , x1:x]
+        if abs(x-x1) > min_with:
+            
+            y_arr = [y, y1]
+            y_start = min(y_arr)
+            y_end = max(y_arr)
+            
+            x_arr = [x, x1]
+            x_start = min(x_arr)
+            x_end = max(x_arr)
+            
+            img_cut = img_copy[y_start:y_end , x_start:x_end]
             cv.imshow('Snippset', img_cut)
     cv.imshow('Cuadro', img)
     
