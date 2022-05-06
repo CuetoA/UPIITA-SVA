@@ -7,21 +7,12 @@ class DetectorDeMonedas():
 
     def __init__(self):
         
-        self.createCoins()
         self.Umbral = 35
         self.grosor = 2
         self.color = (0,255,255)
         self.textSize = 1
         self.fuente = cv.FONT_HERSHEY_SIMPLEX
     
-    def detectCoins(self):
-        Img_color, Img_gray = self.readImage('PRUEBA_MONEDAS_2.jpg')
-        listaContours = self.getCountours(Img_gray=Img_gray)
-        self.countingCoins(listaContours)
-        self.printImage(Img_color)
-        
-        
-    def createCoins(self):
         n = 75
         self.moneda10p  = Moneda('Moneda $10', upperAreaLimit = 40000 +n, lowerAreaLimit = 36000 -n)
         self.moneda5p   = Moneda('Moneda $5', upperAreaLimit = 31522 +n, lowerAreaLimit = 31243 -n)
@@ -33,19 +24,25 @@ class DetectorDeMonedas():
         self.coinsObjectList = [self.moneda10p, self.moneda5p,   self.moneda2p,
                                 self.moneda1p,  self.moneda50c1, self.moneda50c2]
         
+    
+    def detectCoins(self):
+        Img_color, Img_gray = self.readImage('PRUEBA_MONEDAS_2.jpg')
+        listaContours = self.getCountours(Img_gray=Img_gray)
+        self.countingCoins(listaContours)
+        self.printImage(Img_color)
         
         
-    def filePath(self, fileName):    
-        dirname = os.path.dirname(__file__)
-        filePath = os.path.join(dirname , fileName)
-        return filePath
-    
-    
     def readImage(self, fileName):
         img = cv.imread( self.filePath(fileName) ,1)
         imgColor = img.copy()
         imgGray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
         return imgColor, imgGray
+    
+    
+    def filePath(self, fileName):    
+        dirname = os.path.dirname(__file__)
+        filePath = os.path.join(dirname , fileName)
+        return filePath
     
     
     def getCountours(self, Img_gray):
@@ -67,6 +64,13 @@ class DetectorDeMonedas():
                 break
         
     
+    def printImage(self, ImgColor):
+        ImgColor = self.printText(ImgColor)
+        cv.imshow("Coins Counter", ImgColor)
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+        
+    
     def printText(self, ImgColor):
         
         x = 10
@@ -86,10 +90,3 @@ class DetectorDeMonedas():
 
     def generateText(self, moneda):
         return moneda.name + ': ' + str( moneda.quantity )
-           
-    
-    def printImage(self, ImgColor):
-        ImgColor = self.printText(ImgColor)
-        cv.imshow("Coins Counter", ImgColor)
-        cv.waitKey(0)
-        cv.destroyAllWindows()
