@@ -3,7 +3,7 @@ import cv2 as cv
 
 def main():
     detector = DetectorDeMonedas()
-    detector.detectCoins()
+    detector.detectCoins('PRUEBA_MONEDAS_2.jpg')
     
     
 

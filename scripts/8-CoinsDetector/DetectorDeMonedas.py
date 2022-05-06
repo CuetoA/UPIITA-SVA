@@ -25,10 +25,11 @@ class DetectorDeMonedas():
                                 self.moneda1p,  self.moneda50c1, self.moneda50c2]
         
     
-    def detectCoins(self):
-        Img_color, Img_gray = self.readImage('PRUEBA_MONEDAS_2.jpg')
-        listaContours = self.getCountours(Img_gray=Img_gray)
-        self.countingCoins(listaContours)
+    def detectCoins(self, filename):
+        Img_color, Img_gray = self.readImage(filename)
+        listaContours, listaAreas = self.getCountours(Img_gray=Img_gray)
+        self.countingCoins(listaAreas)
+        cv.drawContours(Img_color, listaContours, -1, (0,255,0), 3)
         self.printImage(Img_color)
         
         
@@ -46,15 +47,27 @@ class DetectorDeMonedas():
     
     
     def getCountours(self, Img_gray):
-        _ , imgBinary = cv.threshold(Img_gray, self.Umbral, 255, cv.THRESH_BINARY_INV)
-        listaContornos , _ = cv.findContours(imgBinary, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
-        return listaContornos
+        _ , thresh = cv.threshold(Img_gray, self.Umbral, 255, cv.THRESH_BINARY_INV)
+        listaContornosAux , _ = cv.findContours(thresh, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
+        listaContornos, listaAreas = self.filterContoursAndGetArea(listaContornosAux)
+        return listaContornos, listaAreas
+    
+    def filterContoursAndGetArea(self, listaContornosAux):
+        listaContornos = []
+        listaAreas = []
+        for contorno in listaContornosAux:
+            area = cv.contourArea(contorno)
+            if  area > 1000:
+                listaContornos.append(contorno)
+                listaAreas.append(area)
+        
+        return listaContornos, listaAreas
     
     
-    def countingCoins(self, listaContornos):    
-        for contorno in listaContornos:
-            area = abs( cv.contourArea( contorno , True ) )
-            self.checkAreaPertenence(area)
+    def countingCoins(self, listaAreas): 
+           
+        for Area in listaAreas:
+            self.checkAreaPertenence(Area)
             
                             
     def checkAreaPertenence(self, area):
