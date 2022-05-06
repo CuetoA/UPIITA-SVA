@@ -5,6 +5,9 @@ def main():
     detector = DetectorDeMonedas()
     
     Img_color, Img_gray = detector.readImage('PRUEBA_MONEDAS_2.jpg')
+    listaContours = detector.getCountours(Img_gray=Img_gray)
+    detector.countingCoins(listaContours)
+    detector.printImage(Img_color)
     
     cv.imshow("Contorno", Img_color)
     cv.imshow("Contorno2", Img_gray)
