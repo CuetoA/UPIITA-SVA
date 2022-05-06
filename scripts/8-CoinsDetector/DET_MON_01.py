@@ -37,6 +37,7 @@ def countingCoins(coinsList):
     
     return Monedas_10p, Monedas_5p, Monedas_2p, Monedas_50c1, Monedas_1p, Monedas_50c2
 
+############## EMPIEZA PROGRAMA
 
 Img = cv.imread( filePath('PRUEBA_MONEDAS_2.jpg') ,1)
 Img_color=Img.copy()
@@ -68,6 +69,8 @@ Monedas_50c1=0
 Monedas_1p=0
 Monedas_50c2=0
 coinsList = [Monedas_10p, Monedas_5p, Monedas_2p, Monedas_50c1, Monedas_1p, Monedas_50c2]
+
+
 
 _,Img_Binary=cv.threshold(Img_gray, Umbral, 255, cv.THRESH_BINARY_INV)
 Contornos,_=cv.findContours(Img_Binary, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
