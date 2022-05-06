@@ -26,14 +26,13 @@ class DetectorDeMonedas():
                                 self.moneda1p,  self.moneda50c1, self.moneda50c2]
         
     
-    def detectCoins(self, filename):
+    def detectCoins(self, filename, returnImage):
         Img_color, Img_gray = self.readImage(filename)
         listaContours, listaAreas = self.getCountours(Img_gray=Img_gray)
         print(f'\nLista Areas: \n{len(listaAreas)}')
         print(f'Lista Areas: \n{listaAreas}\n')
         self.countingCoins(listaAreas)
-        cv.drawContours(Img_color, listaContours, -1, (0,255,0), 3)
-        self.printImage(Img_color)
+        self.printImage(Img_color, listaContours, returnImage)
         
         
     def readImage(self, fileName):
@@ -88,12 +87,16 @@ class DetectorDeMonedas():
                 break
         
     
-    def printImage(self, ImgColor):
+    def printImage(self, ImgColor, listaContours, returnImage):
+        cv.drawContours(ImgColor, listaContours, -1, (0,255,0), 3)
         ImgColor = self.printText(ImgColor)
         #ImgColor = cv.resize(ImgColor, (960, 540))
-        cv.imshow("Coins Counter", ImgColor)
-        cv.waitKey(0)
-        cv.destroyAllWindows()
+        if returnImage:
+            return ImgColor
+        else:
+            cv.imshow("Coins Counter", ImgColor)
+            cv.waitKey(0)
+            cv.destroyAllWindows()
         
     
     def printText(self, ImgColor):
