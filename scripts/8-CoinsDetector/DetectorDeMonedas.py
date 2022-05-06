@@ -29,15 +29,16 @@ class DetectorDeMonedas():
     def detectCoins(self, filename, returnImage):
         Img_color, Img_gray = self.readImage(filename)
         listaContours, listaAreas = self.getCountours(Img_gray=Img_gray)
-        print(f'\nLista Areas: \n{len(listaAreas)}')
+        print(f'Lista Areas: \n{len(listaAreas)}')
         print(f'Lista Areas: \n{listaAreas}\n')
         self.countingCoins(listaAreas)
-        self.printImage(Img_color, listaContours, returnImage)
+        ImgColor = self.printImage(Img_color, listaContours, returnImage)
+        return ImgColor
         
         
     def readImage(self, fileName):
         path = self.filePath(fileName)
-        print(f'\n este: {path}\n')
+        print(f'\n este: {path}')
         img = cv.imread( self.filePath(fileName) ,1)
         imgColor = img.copy()
         imgGray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
@@ -67,7 +68,7 @@ class DetectorDeMonedas():
         listaAreas = []
         for contorno in listaContornosAux:
             area = cv.contourArea(contorno)
-            if  area > 1 and area < 100000:
+            if  area > 500 and area < 100000:
                 listaContornos.append(contorno)
                 listaAreas.append(area)
         
