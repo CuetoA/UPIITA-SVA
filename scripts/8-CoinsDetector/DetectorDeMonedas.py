@@ -1,5 +1,6 @@
 import os
 import cv2 as cv
+import numpy as np
 from Moneda import Moneda
 
 class DetectorDeMonedas():
@@ -28,6 +29,8 @@ class DetectorDeMonedas():
     def detectCoins(self, filename):
         Img_color, Img_gray = self.readImage(filename)
         listaContours, listaAreas = self.getCountours(Img_gray=Img_gray)
+        print(f'\nLista Areas: \n{len(listaAreas)}')
+        print(f'Lista Areas: \n{listaAreas}\n')
         self.countingCoins(listaAreas)
         cv.drawContours(Img_color, listaContours, -1, (0,255,0), 3)
         self.printImage(Img_color)
@@ -47,8 +50,32 @@ class DetectorDeMonedas():
     
     
     def getCountours(self, Img_gray):
-        _ , thresh = cv.threshold(Img_gray, self.Umbral, 255, cv.THRESH_BINARY_INV)
-        listaContornosAux , _ = cv.findContours(thresh, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
+        
+        blur = cv.blur (Img_gray, (11,11))
+        
+        _ , thresh = cv.threshold(blur, self.Umbral, 255, cv.THRESH_BINARY_INV)
+        #cv.imshow('Test', thresh)
+        
+        edges_high_thresh = cv.Canny(blur, 50, 50)
+        #cv.imshow('canny', edges_high_thresh)
+        
+        _ , thresh2 = cv.threshold(edges_high_thresh, self.Umbral, 255, cv.THRESH_BINARY_INV)
+        #cv.imshow('Test2', thresh2)
+                
+        
+        size = (220, 220)
+        Img_gray = cv.resize(Img_gray, size)
+        thresh = cv.resize(thresh, size)
+        edges_high_thresh = cv.resize(edges_high_thresh, size)
+        thresh2 = cv.resize(thresh2, size)
+        blur = cv.resize(blur, size)
+        
+        
+        images = np.hstack((Img_gray, blur, thresh, edges_high_thresh, thresh2))
+        cv.imshow('Frame', images)
+        
+        
+        listaContornosAux , _ = cv.findContours(thresh2, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
         listaContornos, listaAreas = self.filterContoursAndGetArea(listaContornosAux)
         return listaContornos, listaAreas
     
@@ -57,7 +84,7 @@ class DetectorDeMonedas():
         listaAreas = []
         for contorno in listaContornosAux:
             area = cv.contourArea(contorno)
-            if  area > 1000:
+            if  area > 1000 and area < 100000:
                 listaContornos.append(contorno)
                 listaAreas.append(area)
         
@@ -79,6 +106,7 @@ class DetectorDeMonedas():
     
     def printImage(self, ImgColor):
         ImgColor = self.printText(ImgColor)
+        ImgColor = cv.resize(ImgColor, (960, 540))
         cv.imshow("Coins Counter", ImgColor)
         cv.waitKey(0)
         cv.destroyAllWindows()
