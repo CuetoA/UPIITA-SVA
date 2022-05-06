@@ -1,6 +1,10 @@
 import cv2 as cv
+import os
 
-Img = cv.imread('T04_DETECTOR_MONEDAS\monedas.jpg',1)
+dirname = os.path.dirname(__file__)
+filePath = os.path.join(dirname , 'monedas1.JPG')
+
+Img = cv.imread(filePath,1)
 Img_color=Img.copy()
 Img_gray=cv.cvtColor(Img,cv.COLOR_BGR2GRAY)
 

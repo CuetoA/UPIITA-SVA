@@ -9,18 +9,18 @@ class DetectorDeMonedas():
     def __init__(self):
         
         self.Umbral = 35
-        self.grosor = 2
+        self.grosor = 1
         self.color = (0,255,255)
-        self.textSize = 1
+        self.textSize = 0.5
         self.fuente = cv.FONT_HERSHEY_SIMPLEX
     
-        n = 75
-        self.moneda10p  = Moneda('Moneda $10', upperAreaLimit = 40000 +n, lowerAreaLimit = 36000 -n)
-        self.moneda5p   = Moneda('Moneda $5', upperAreaLimit = 31522 +n, lowerAreaLimit = 31243 -n)
-        self.moneda2p   = Moneda('Moneda $2', upperAreaLimit = 25738 +n, lowerAreaLimit = 25346 -n)
-        self.moneda1p   = Moneda('Moneda $1', upperAreaLimit = 21283 +n, lowerAreaLimit = 21143 -n)
-        self.moneda50c1 = Moneda('Moneda $0.5 tipo 1', upperAreaLimit = 23029 +n, lowerAreaLimit = 22768 -n)
-        self.moneda50c2 = Moneda('Moneda $0.5 tipo 2', upperAreaLimit = 13758 +n, lowerAreaLimit = 13641 -n)
+        tolerance = 75
+        self.moneda10p  = Moneda('Moneda $10', avrgArea = 2039, areaTolerance = tolerance )
+        self.moneda5p   = Moneda('Moneda $5', avrgArea = 1701, areaTolerance = tolerance )
+        self.moneda2p   = Moneda('Moneda $2', avrgArea = 1391, areaTolerance = tolerance )
+        self.moneda1p   = Moneda('Moneda $1', avrgArea = 1156, areaTolerance = tolerance )
+        self.moneda50c1 = Moneda('Moneda $0.5 tipo 1', avrgArea = 1246, areaTolerance = tolerance )
+        self.moneda50c2 = Moneda('Moneda $0.5 tipo 2', avrgArea = 760, areaTolerance = tolerance )
         
         self.coinsObjectList = [self.moneda10p, self.moneda5p,   self.moneda2p,
                                 self.moneda1p,  self.moneda50c1, self.moneda50c2]
@@ -37,6 +37,8 @@ class DetectorDeMonedas():
         
         
     def readImage(self, fileName):
+        path = self.filePath(fileName)
+        print(f'\n este: {path}\n')
         img = cv.imread( self.filePath(fileName) ,1)
         imgColor = img.copy()
         imgGray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
@@ -51,40 +53,22 @@ class DetectorDeMonedas():
     
     def getCountours(self, Img_gray):
         
-        blur = cv.blur (Img_gray, (11,11))
-        
-        _ , thresh = cv.threshold(blur, self.Umbral, 255, cv.THRESH_BINARY_INV)
-        #cv.imshow('Test', thresh)
-        
-        edges_high_thresh = cv.Canny(blur, 50, 50)
-        #cv.imshow('canny', edges_high_thresh)
-        
-        _ , thresh2 = cv.threshold(edges_high_thresh, self.Umbral, 255, cv.THRESH_BINARY_INV)
-        #cv.imshow('Test2', thresh2)
-                
-        
-        size = (220, 220)
-        Img_gray = cv.resize(Img_gray, size)
-        thresh = cv.resize(thresh, size)
-        edges_high_thresh = cv.resize(edges_high_thresh, size)
-        thresh2 = cv.resize(thresh2, size)
-        blur = cv.resize(blur, size)
-        
-        
-        images = np.hstack((Img_gray, blur, thresh, edges_high_thresh, thresh2))
-        cv.imshow('Frame', images)
-        
-        
-        listaContornosAux , _ = cv.findContours(thresh2, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
+        _ , thresh = cv.threshold(Img_gray, self.Umbral, 255, cv.THRESH_BINARY_INV)
+        listaContornosAux , _ = cv.findContours(thresh, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
         listaContornos, listaAreas = self.filterContoursAndGetArea(listaContornosAux)
         return listaContornos, listaAreas
+    
+    
+            
+            
+            
     
     def filterContoursAndGetArea(self, listaContornosAux):
         listaContornos = []
         listaAreas = []
         for contorno in listaContornosAux:
             area = cv.contourArea(contorno)
-            if  area > 1000 and area < 100000:
+            if  area > 1 and area < 100000:
                 listaContornos.append(contorno)
                 listaAreas.append(area)
         
@@ -106,7 +90,7 @@ class DetectorDeMonedas():
     
     def printImage(self, ImgColor):
         ImgColor = self.printText(ImgColor)
-        ImgColor = cv.resize(ImgColor, (960, 540))
+        #ImgColor = cv.resize(ImgColor, (960, 540))
         cv.imshow("Coins Counter", ImgColor)
         cv.waitKey(0)
         cv.destroyAllWindows()

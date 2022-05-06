@@ -1,8 +1,8 @@
 class Moneda():
     
-    def __init__(self, name, upperAreaLimit, lowerAreaLimit):
-        self.upperAreaLimit = upperAreaLimit
-        self.lowerAreaLimit = lowerAreaLimit
+    def __init__(self, name, avrgArea, areaTolerance):
+        self.upperAreaLimit = avrgArea + areaTolerance
+        self.lowerAreaLimit = avrgArea - areaTolerance
         self.quantity = 0
         self.name = name
         
