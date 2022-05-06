@@ -57,11 +57,7 @@ class DetectorDeMonedas():
         listaContornosAux , _ = cv.findContours(thresh, cv.RETR_LIST,cv.CHAIN_APPROX_NONE)
         listaContornos, listaAreas = self.filterContoursAndGetArea(listaContornosAux)
         return listaContornos, listaAreas
-    
-    
-            
-            
-            
+      
     
     def filterContoursAndGetArea(self, listaContornosAux):
         listaContornos = []
