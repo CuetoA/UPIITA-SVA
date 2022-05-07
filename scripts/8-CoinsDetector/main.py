@@ -10,11 +10,11 @@ def main():
     
     size = img1.shape
     size = (size[0] , size[1])
-    
     img1 = cv.resize(img1, size)
     img2 = cv.resize(img2, size)
     img3 = cv.resize(img3, size)
     images = np.hstack((img1, img2, img3))
+    
     cv.imshow('Coins counter', images)
     cv.waitKey(0)
     cv.destroyAllWindows()
