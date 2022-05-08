@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 
-mylist = ['Scarlette', 'Andrés', 'Boni']
+mylist = ['Scarlette', 'Andrés', 'Boni', 'Canny']
 file_types = [ ("JPEG (*.jpg)", "*.jpg") , ("All files (*.*)", "*.*") ]
 
 
