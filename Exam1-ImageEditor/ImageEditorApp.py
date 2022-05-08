@@ -7,29 +7,26 @@ file_types = [("JPEG (*.jpg)", "*.jpg"),
               ("All files (*.*)", "*.*")]
 
 colum1 = [
-    [sg.Text("Column1")],
-    [sg.Image(key="-IMAGE-", size = (250, 250))],
+    [sg.Image(key="-IMAGE-")],
 ]
 
 colum2 = [
-    [sg.Text("Column2")],
     [
         sg.Text("Image File"),
-        sg.Input(size=(25, 1), key="-FILE-"),
+        sg.Input(size=(30, 1), key="-FILE-"),
         sg.FileBrowse(file_types=file_types),
         sg.Button("Load Image"),
     ]
 ]
 
 layout = [
-    [sg.Text("Hello PySimpleGUI")],
+    [sg.Text("Welcome, select a file")],
     [sg.Column(colum1),
      sg.Column(colum2),
      ]
 ]
 
-
-window = sg.Window("Hello", layout)
+window = sg.Window("Cueto's Image Editor", layout)
 
 while True:
     event, values = window.read()
@@ -43,9 +40,6 @@ while True:
             bio = io.BytesIO()
             image.save(bio, format="PNG")
             window["-IMAGE-"].update(data=bio.getvalue())
-                
-        print('Obrigado!')
         
-        #window["-IMAGE-"].update(filename)
 
 window.close()
