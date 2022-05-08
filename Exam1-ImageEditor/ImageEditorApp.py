@@ -37,6 +37,8 @@ while True:
         if value == 'Canny':        image = fil.canny(filename)
         if value == 'Laplace':      image = fil.laplace(filename)
         if value == 'Complemento':  image = fil.complemento(filename)
+        if value == 'SeparateAndJoin':  image = fil.test(filename)
+        
         printImage()
         
         
