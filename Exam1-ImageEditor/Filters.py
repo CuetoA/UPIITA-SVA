@@ -1,9 +1,10 @@
 import cv2 as cv
+import numpy as np
 from PIL import Image
 
 class Filters:
     def __init__(self):
-        self.filtersList = ['Canny']
+        self.filtersList = ['Canny', 'Laplace', 'Complemento']
         
     def decorateFunction(func):
         def wrapper(self, filename):
@@ -19,11 +20,39 @@ class Filters:
         img_canny = cv.Canny(img, 50, 200, None, 3)
         return img_canny
     
-    # @decorateFunction
-    # def laplace(filename):
-    #     ddepth = cv.CV_16S
-    #     kernelSice = 7
+    @decorateFunction
+    def laplace(filename):
+        ddepth = cv.CV_16S
+        kernelSice = 7
         
-    #     img1 = cv.imread(filename, 0) # 0 BN, 1 Color
-    #     img1 = cv.Laplacian(img1 , ddepth, ksize = kernelSice )
-    #     return img1
+        img1 = cv.imread(filename, 0) # 0 BN, 1 Color
+        img1 = cv.Laplacian(img1 , ddepth, ksize = kernelSice )
+        return img1
+    
+    @decorateFunction
+    def complemento(filename):
+        
+        img = cv.imread(filename, 1)
+        max = np.amax(img)
+        size = np.shape( img )
+        
+        
+        
+        rowAux = []
+        for row in range( size[0] ):
+            columnAux = []
+            for column in range( size[1] ):
+                pixel = []
+                for layer in range ( size[2] ):
+                    value = max - img[row][column][layer]
+                    pixel.append(value)
+                columnAux.append(pixel)
+            rowAux.append(columnAux)
+                
+                    
+                    
+            #rowAux = [max - img[row][column]  for column in range( size[1] )]
+            #imgAux.append(rowAux)
+        
+        return np.array( rowAux )
+        

@@ -34,9 +34,12 @@ while True:
         print(f"Selected value: {values['-FILTERS-']}")
         print(f"Selected type: {type(values['-FILTERS-'])}")
         value = values['-FILTERS-']
-        if value == 'Canny':
-            image = fil.canny(filename)
-            printImage()
+        if value == 'Canny':        image = fil.canny(filename)
+        if value == 'Laplace':      image = fil.laplace(filename)
+        if value == 'Complemento':  image = fil.complemento(filename)
+        printImage()
+        
+        
             
 
 
