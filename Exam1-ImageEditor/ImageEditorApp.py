@@ -3,10 +3,15 @@ import os
 import PySimpleGUI as sg
 from layout import layout
 from PIL import Image
-from Filters import Filters
+from Test import Test
 
+
+
+test = Test()
+Test.funcion1('culo')
+
+from Filters import Filters
 fil = Filters()
-print(fil.filtersList)
 window = sg.Window("Cueto's Image Editor", layout(fil.filtersList))
 
 
@@ -32,6 +37,7 @@ while True:
             
     if values['-FILTERS-']:
         print(f"Selected value: {values['-FILTERS-']}")
+        print(f"Selected type: {type(values['-FILTERS-'])}")
         value = values['-FILTERS-']
         if value == 'Canny':
             image = fil.canny(filename)
