@@ -31,28 +31,17 @@ class Filters:
     
     @decorateFunction
     def complemento(filename):
-        
         img = cv.imread(filename, 1)
         max = np.amax(img)
         size = np.shape( img )
-        
-        
         
         rowAux = []
         for row in range( size[0] ):
             columnAux = []
             for column in range( size[1] ):
-                pixel = []
-                for layer in range ( size[2] ):
-                    value = max - img[row][column][layer]
-                    pixel.append(value)
+                pixel = [ max - img[row][column][layer]  for layer in range( size[2] ) ]
                 columnAux.append(pixel)
             rowAux.append(columnAux)
                 
-                    
-                    
-            #rowAux = [max - img[row][column]  for column in range( size[1] )]
-            #imgAux.append(rowAux)
-        
         return np.array( rowAux )
         
