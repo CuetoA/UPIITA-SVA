@@ -5,8 +5,10 @@ from layout import layout
 from PIL import Image
 from Filters import Filters
 
-window = sg.Window("Cueto's Image Editor", layout())
-filters = Filters
+fil = Filters()
+print(fil.filtersList)
+window = sg.Window("Cueto's Image Editor", layout(fil.filtersList))
+
 
 
 
@@ -30,8 +32,9 @@ while True:
             
     if values['-FILTERS-']:
         print(f"Selected value: {values['-FILTERS-']}")
-        if values['-FILTERS-'] == 'Canny':
-            image = filters.canny(filename)
+        value = values['-FILTERS-']
+        if value == 'Canny':
+            image = fil.canny(filename)
             printImage()
             
 

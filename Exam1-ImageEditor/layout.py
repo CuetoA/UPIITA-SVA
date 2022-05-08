@@ -1,10 +1,9 @@
 import PySimpleGUI as sg
 
-mylist = ['Scarlette', 'Andrés', 'Boni', 'Canny']
 file_types = [ ("JPEG (*.jpg)", "*.jpg") , ("All files (*.*)", "*.*") ]
 
 
-def layout():
+def layout(mylist):
     
     column1 = [
         [sg.Image(key="-IMAGE-")]
