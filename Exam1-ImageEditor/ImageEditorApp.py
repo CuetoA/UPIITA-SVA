@@ -3,14 +3,9 @@ import os
 import PySimpleGUI as sg
 from layout import layout
 from PIL import Image
-from Test import Test
-
-
-
-test = Test()
-Test.funcion1('culo')
-
 from Filters import Filters
+
+
 fil = Filters()
 window = sg.Window("Cueto's Image Editor", layout(fil.filtersList))
 
