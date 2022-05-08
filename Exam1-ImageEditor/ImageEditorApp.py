@@ -1,36 +1,10 @@
 import io
 import os
 import PySimpleGUI as sg
+from layout import layout
 from PIL import Image
 
-mylist = ['Scarlette', 'Andrés', 'Boni']
-
-file_types = [("JPEG (*.jpg)", "*.jpg"),
-              ("All files (*.*)", "*.*")]
-
-column1 = [
-    [sg.Image(key="-IMAGE-")],
-]
-
-column2 = [
-    [
-        sg.Text("Image File"),
-        sg.Input(size=(30, 1), key="-FILE-"),
-        sg.FileBrowse(file_types=file_types),
-        sg.Button("Load Image"),
-    ],
-    [sg.Combo(mylist, enable_events=True, key='-FILTERS-')],
-]
-
-layout = [
-    [sg.Text("Welcome, select a file")],
-    [sg.Column(column1),
-     sg.Column(column2, key="-COLUMN2-")]
-]
-
-window = sg.Window("Cueto's Image Editor", layout)
-
-
+window = sg.Window("Cueto's Image Editor", layout())
 
 
 while True:
