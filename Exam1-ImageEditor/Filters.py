@@ -2,18 +2,29 @@ import cv2 as cv
 import numpy as np
 from PIL import Image
 
+
+def decorateFunction(func):
+    def wrapper(self, filename):
+        img = func(self, filename)
+        return Image.fromarray(img)
+        
+    return wrapper
+    
+
+def separateAndJoinDecorator(func):
+    def wrapper(self, filename):
+        array = self.separateLayers(filename)
+        func(self, filename)
+        newArray = self.joinLayers(array)
+        return newArray
+    
+    return wrapper
+
+
 class Filters:
     def __init__(self):
-        self.filtersList = ['Canny', 'Laplace', 'Complemento', 'SeparateAndJoin', 'test']
+        self.filtersList = ['Canny', 'Laplace', 'Complemento', 'test']
         
-    def decorateFunction(func):
-        def wrapper(self, filename):
-            print('Entrando a sdecorateFunction wrapper')
-            img = cv.imread(filename)
-            img = func(self, filename)
-            return Image.fromarray(img)
-            
-        return wrapper
     
     @decorateFunction
     def canny(self, filename):
@@ -21,14 +32,13 @@ class Filters:
         img_canny = cv.Canny(img, 50, 200, None, 3)
         return img_canny
     
+    
     @decorateFunction
     def laplace(self, filename):
-        ddepth = cv.CV_16S
-        kernelSice = 7
-        
         img1 = cv.imread(filename, 0) # 0 BN, 1 Color
-        img1 = cv.Laplacian(img1 , ddepth, ksize = kernelSice )
+        img1 = cv.Laplacian(img1 , ddepth=cv.CV_16S , ksize = 7 )
         return img1
+    
     
     @decorateFunction
     def complemento(self, filename):
@@ -42,30 +52,15 @@ class Filters:
             for column in range( size[1] ):
                 pixel = [ max - img[row][column][layer]  for layer in range( size[2] ) ]
                 columnAux.append(pixel)
-            rowAux.append(columnAux)
-                
+            rowAux.append(columnAux)     
         return np.array( rowAux )
     
     
     @decorateFunction
-    def separateAndJoin(self, filename):
-              
-        array = self.separateLayers(filename)
-        newArray = self.joinLayers(array)
+    @separateAndJoinDecorator
+    def test(self, filename):
+        print(f'Entramos dentro de test con el file: \n\t\t{filename}')
         
-        return newArray
-    
-    
-    def separateAndJoinDecorator(func):
-        def wrapper(self, filename):
-            print('Entrando a separate and join wrapper')
-            array = self.separateLayers(filename)
-            func(self, filename)
-            newArray = self.joinLayers(array)
-            
-            return newArray
-        return wrapper
-    
     
     def separateLayers(self, filename):
         
@@ -77,8 +72,7 @@ class Filters:
         size = np.shape( img )
         rows   = size[0]
         columns = size[1]
-        
-        
+          
         for row in range( rows ):
             rowL1 = []
             rowL2 = []
@@ -98,15 +92,9 @@ class Filters:
             layer3.append(rowL3)
         
         imgByLayers = [layer1, layer2, layer3]
-        imgaux = np.array( imgByLayers )
-        
-        print('Out specs:')
-        print(f'\tSize: {np.shape(imgaux) }')
-        print(f'\tImg len: {len( imgByLayers )}')
-        print(f'\tLayer len: {len( layer1 )}')
-        print(''.center(70, '-'))
-        
+        imgaux = np.array( imgByLayers )        
         return imgaux
+    
     
     def joinLayers(self, numpyArray):
         
@@ -126,10 +114,4 @@ class Filters:
             imgAux.append(renglonAux)
         
         imgAux = np.array( imgAux )
-        return imgAux
-
-    @decorateFunction
-    @separateAndJoinDecorator
-    def test(self, filename):
-        print(f'Entramos dentro de test con el file: \n\t\t{filename}')
-        
+        return imgAux      

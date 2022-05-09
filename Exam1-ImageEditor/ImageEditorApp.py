@@ -20,6 +20,7 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED:
         break
+    
     if event == 'Load Image':
         filename = values["-FILE-"]
         if os.path.exists(filename):
@@ -27,19 +28,11 @@ while True:
             printImage()
             
     if values['-FILTERS-']:
-        print(f"Selected value: {values['-FILTERS-']}")
-        print(f"Selected type: {type(values['-FILTERS-'])}")
         value = values['-FILTERS-']
-        if value == 'Canny':            image = fil.canny(filename)
-        if value == 'Laplace':          image = fil.laplace(filename)
-        if value == 'Complemento':      image = fil.complemento(filename)
-        if value == 'SeparateAndJoin':  image = fil.separateAndJoin(filename)
-        if value == 'test':             image = fil.test(filename)
-        
+        if value == fil.filtersList[0]:      image = fil.canny(filename)
+        if value == fil.filtersList[1]:      image = fil.laplace(filename)
+        if value == fil.filtersList[2]:      image = fil.complemento(filename)
+        if value == fil.filtersList[3]:      image = fil.test(filename)
         printImage()
-        
-        
-            
-
 
 window.close()
