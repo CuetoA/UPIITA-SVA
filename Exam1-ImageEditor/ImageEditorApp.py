@@ -34,6 +34,7 @@ while True:
         if value == fil.filtersList[2]:      image = fil.negative(filename)
         if value == fil.filtersList[3]:      image = fil.birghtAutoAdjust(filename)
         if value == fil.filtersList[4]:      fil.firstDerivate(filename)
+        if value == fil.filtersList[5]:      fil.histogramsSelf(filename)
         
         printImage()
 

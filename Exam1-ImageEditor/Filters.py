@@ -1,8 +1,8 @@
 import cv2 as cv
 import numpy as np
-import matplotlib.pyplot as plt
-import scipy.ndimage as nd
 from PIL import Image
+import scipy.ndimage as nd
+import matplotlib.pyplot as plt
 
 
 def decorateFunction(func):
@@ -25,7 +25,7 @@ def separateAndJoinDecorator(func):
 
 class Filters:
     def __init__(self):
-        self.filtersList = ['Canny', 'Laplace', 'Negative', 'Auto Adjust', 'First Derivate']
+        self.filtersList = ['Canny', 'Laplace', 'Negative', 'Auto Adjust', 'First Derivate', 'histograms']
         
     
     @decorateFunction
@@ -40,6 +40,28 @@ class Filters:
         img1 = cv.imread(filename, 0) # 0 BN, 1 Color
         img1 = cv.Laplacian(img1 , ddepth=cv.CV_16S , ksize = 7 )
         return img1
+    
+    
+    def histogramsSelf(self, filename):
+        array = self.separateLayers(filename)
+        
+        histograms = []
+        for layer in array:
+            countArr = [0] * 256
+            for row in layer:
+                for value in row:
+                    countArr[value] += 1
+            histograms.append(countArr)
+        
+        plt.plot( range(len(histograms[0])), histograms[0], 'b' )
+        plt.plot( range(len(histograms[1])), histograms[1], 'g' )
+        plt.plot( range(len(histograms[2])), histograms[2], 'r' )
+        plt.title('RGB histogram')
+        plt.ylabel('Frequency')
+        plt.xlabel('Value')
+        plt.show()          
+        
+    
     
     def firstDerivate(self, filename):
         img = cv.imread(filename, 0)
