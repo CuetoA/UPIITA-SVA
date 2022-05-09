@@ -31,8 +31,9 @@ while True:
         value = values['-FILTERS-']
         if value == fil.filtersList[0]:      image = fil.canny(filename)
         if value == fil.filtersList[1]:      image = fil.laplace(filename)
-        if value == fil.filtersList[2]:      image = fil.complemento(filename)
-        if value == fil.filtersList[3]:      image = fil.test2(filename)
+        if value == fil.filtersList[2]:      image = fil.negative(filename)
+        if value == fil.filtersList[3]:      image = fil.birghtAutoAdjust(filename)
+        
         printImage()
 
 window.close()

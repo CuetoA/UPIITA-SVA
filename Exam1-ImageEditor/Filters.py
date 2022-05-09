@@ -23,7 +23,7 @@ def separateAndJoinDecorator(func):
 
 class Filters:
     def __init__(self):
-        self.filtersList = ['Canny', 'Laplace', 'Complemento', 'test']
+        self.filtersList = ['Canny', 'Laplace', 'Negative', 'Auto Adjust']
         
     
     @decorateFunction
@@ -41,26 +41,9 @@ class Filters:
     
     
     @decorateFunction
-    def complemento(self, filename):
-        img = cv.imread(filename, 1)
-        max = np.amax(img)
-        size = np.shape( img )
-        
-        rowAux = []
-        for row in range( size[0] ):
-            columnAux = []
-            for column in range( size[1] ):
-                pixel = [ max - img[row][column][layer]  for layer in range( size[2] ) ]
-                columnAux.append(pixel)
-            rowAux.append(columnAux)     
-        return np.array( rowAux )
-    
-    
-    @decorateFunction
     @separateAndJoinDecorator
-    def test2(self, array):
+    def negative(self, array):
         layers, rows, columns = np.shape(array)
-        print(f'\nShape: {np.shape(array)}\n')
         
         for l in range(layers):
             max = np.amax(array[l])
@@ -69,6 +52,20 @@ class Filters:
                     array[l][r][c] = max - array[l][r][c]
         return array
         
+    @decorateFunction
+    @separateAndJoinDecorator
+    def birghtAutoAdjust(self, array):
+        layers, rows, columns = np.shape(array)
+        plow = 0
+        phigh = 255
+        
+        for l in range(layers):
+            max = np.amax(array[l])
+            min = np.amin(array[l])
+            for r in range(rows):
+                for c in range(columns):
+                    array[l][r][c] = (array[l][r][c] - plow) * ( max - min )/(phigh - plow)
+        return array
     
     def separateLayers(self, filename):
         
