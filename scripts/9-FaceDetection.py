@@ -1,7 +1,7 @@
 import os
 import cv2 as cv
 
-color = 0
+color = (0, 255, 255)
 grosor = 2
 escala = 1
 
