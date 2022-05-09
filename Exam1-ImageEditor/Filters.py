@@ -4,10 +4,11 @@ from PIL import Image
 
 class Filters:
     def __init__(self):
-        self.filtersList = ['Canny', 'Laplace', 'Complemento', 'SeparateAndJoin']
+        self.filtersList = ['Canny', 'Laplace', 'Complemento', 'SeparateAndJoin', 'test']
         
     def decorateFunction(func):
         def wrapper(self, filename):
+            print('Entrando a sdecorateFunction wrapper')
             img = cv.imread(filename)
             img = func(self, filename)
             return Image.fromarray(img)
@@ -45,15 +46,25 @@ class Filters:
                 
         return np.array( rowAux )
     
+    
     @decorateFunction
-    def test(self, filename):
-        
-        
-        
+    def separateAndJoin(self, filename):
+              
         array = self.separateLayers(filename)
         newArray = self.joinLayers(array)
         
         return newArray
+    
+    def separateAndJoinTest(func):
+        def wrapper(self, filename):
+            print('Entrando a separate and join wrapper')
+            array = self.separateLayers(filename)
+            func(self, filename)
+            newArray = self.joinLayers(array)
+            
+            return newArray
+        return wrapper
+    
     
     def separateLayers(self, filename):
         
@@ -119,5 +130,8 @@ class Filters:
         imgAux = np.array( imgAux )
         return imgAux
 
-         
+    @decorateFunction
+    @separateAndJoinTest
+    def test(self, filename):
+        print(f'Entramos dentro de test con el file: \n\t\t{filename}')
         

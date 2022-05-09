@@ -1,19 +1,12 @@
 from Filters import Filters
-fil = Filters()
-
 import io
 import os
 import PySimpleGUI as sg
 from layout import layout
 from PIL import Image
 
-
-
-
+fil = Filters()
 window = sg.Window("Cueto's Image Editor", layout(fil.filtersList))
-
-
-
 
 
 def printImage():
@@ -40,7 +33,8 @@ while True:
         if value == 'Canny':            image = fil.canny(filename)
         if value == 'Laplace':          image = fil.laplace(filename)
         if value == 'Complemento':      image = fil.complemento(filename)
-        if value == 'SeparateAndJoin':  image = fil.test(filename)
+        if value == 'SeparateAndJoin':  image = fil.separateAndJoin(filename)
+        if value == 'test':             image = fil.test(filename)
         
         printImage()
         
