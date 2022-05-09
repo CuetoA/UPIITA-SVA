@@ -6,10 +6,10 @@ class Filters:
     def __init__(self):
         self.filtersList = ['Canny', 'Laplace', 'Complemento', 'SeparateAndJoin']
         
-    def decorateFunction(self, func):
+    def decorateFunction(func):
         def wrapper(self, filename):
             img = cv.imread(filename)
-            img = func(filename)
+            img = func(self, filename)
             return Image.fromarray(img)
             
         return wrapper
