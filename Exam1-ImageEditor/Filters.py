@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np
+import matplotlib.pyplot as plt
+import scipy.ndimage as nd
 from PIL import Image
 
 
@@ -23,7 +25,7 @@ def separateAndJoinDecorator(func):
 
 class Filters:
     def __init__(self):
-        self.filtersList = ['Canny', 'Laplace', 'Negative', 'Auto Adjust']
+        self.filtersList = ['Canny', 'Laplace', 'Negative', 'Auto Adjust', 'First Derivate']
         
     
     @decorateFunction
@@ -39,6 +41,14 @@ class Filters:
         img1 = cv.Laplacian(img1 , ddepth=cv.CV_16S , ksize = 7 )
         return img1
     
+    def firstDerivate(self, filename):
+        img = cv.imread(filename, 0)
+        I = cv.imread(filename, 0).astype(np.int32)
+        kx = np.array( [[-1, 0, 1]] )
+        Fx = nd.convolve(I, kx)
+        histogram = np.sum(Fx, axis = 0)
+        plt.plot( range(len(histogram)), histogram )
+        plt.show()
     
     @decorateFunction
     @separateAndJoinDecorator
@@ -66,6 +76,8 @@ class Filters:
                 for c in range(columns):
                     array[l][r][c] = (array[l][r][c] - plow) * ( max - min )/(phigh - plow)
         return array
+    
+    
     
     def separateLayers(self, filename):
         
@@ -120,3 +132,5 @@ class Filters:
         
         imgAux = np.array( imgAux )
         return imgAux       
+    
+

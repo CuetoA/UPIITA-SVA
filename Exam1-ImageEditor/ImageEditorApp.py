@@ -33,6 +33,7 @@ while True:
         if value == fil.filtersList[1]:      image = fil.laplace(filename)
         if value == fil.filtersList[2]:      image = fil.negative(filename)
         if value == fil.filtersList[3]:      image = fil.birghtAutoAdjust(filename)
+        if value == fil.filtersList[4]:      fil.firstDerivate(filename)
         
         printImage()
 
