@@ -14,7 +14,7 @@ def decorateFunction(func):
 def separateAndJoinDecorator(func):
     def wrapper(self, filename):
         array = self.separateLayers(filename)
-        func(self, filename)
+        array = func(self, array)
         newArray = self.joinLayers(array)
         return newArray
     
@@ -58,8 +58,23 @@ class Filters:
     
     @decorateFunction
     @separateAndJoinDecorator
-    def test(self, filename):
-        print(f'Entramos dentro de test con el file: \n\t\t{filename}')
+    def test(self, array):
+        
+        newArray = []
+        for layer in array:
+            newLayer = []
+            max = np.amax(layer)
+            #rows, columns = np.shape(layer)
+            
+            for row in layer:
+                newRow = []
+                for column in row:
+                    newValue = max - column
+                    newRow.append(newValue)
+                newLayer.append(newRow)
+            newArray.append(newLayer)            
+        
+        return newArray
         
     
     def separateLayers(self, filename):
@@ -114,4 +129,4 @@ class Filters:
             imgAux.append(renglonAux)
         
         imgAux = np.array( imgAux )
-        return imgAux      
+        return imgAux       
