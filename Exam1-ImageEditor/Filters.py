@@ -23,6 +23,8 @@ def separateAndJoinDecorator(func):
     return wrapper
 
 
+
+
 class Filters:
     def __init__(self):
         self.filtersList = ['Canny', 'Laplace', 'Negative', 'Auto Adjust', 'First Derivate', 'histograms']
@@ -62,7 +64,6 @@ class Filters:
         plt.show()          
         
     
-    
     def firstDerivate(self, filename):
         img = cv.imread(filename, 0)
         I = cv.imread(filename, 0).astype(np.int32)
@@ -71,6 +72,7 @@ class Filters:
         histogram = np.sum(Fx, axis = 0)
         plt.plot( range(len(histogram)), histogram )
         plt.show()
+    
     
     @decorateFunction
     @separateAndJoinDecorator
@@ -83,6 +85,7 @@ class Filters:
                 for c in range(columns):
                     array[l][r][c] = max - array[l][r][c]
         return array
+        
         
     @decorateFunction
     @separateAndJoinDecorator
@@ -98,7 +101,6 @@ class Filters:
                 for c in range(columns):
                     array[l][r][c] = (array[l][r][c] - plow) * ( max - min )/(phigh - plow)
         return array
-    
     
     
     def separateLayers(self, filename):
