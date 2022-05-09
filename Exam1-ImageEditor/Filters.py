@@ -55,7 +55,8 @@ class Filters:
         
         return newArray
     
-    def separateAndJoinTest(func):
+    
+    def separateAndJoinDecorator(func):
         def wrapper(self, filename):
             print('Entrando a separate and join wrapper')
             array = self.separateLayers(filename)
@@ -69,9 +70,6 @@ class Filters:
     def separateLayers(self, filename):
         
         img = cv.imread(filename)
-        print(''.center(70, '-'))
-        print('Input specs:')
-        print(f'\tSize: {np.shape(img) }')
         
         layer1 = []
         layer2 = []
@@ -87,13 +85,13 @@ class Filters:
             rowL3 = []
             
             for column in range( columns ):
-                p1 = img[row][column][0]
-                p2 = img[row][column][1]
-                p3 = img[row][column][2]
+                pixelayerl = img[row][column][0]
+                pixelLayer2 = img[row][column][1]
+                pixelLayer3 = img[row][column][2]
 
-                rowL1.append(p1)
-                rowL2.append(p2)
-                rowL3.append(p3)
+                rowL1.append(pixelayerl)
+                rowL2.append(pixelLayer2)
+                rowL3.append(pixelLayer3)
                 
             layer1.append(rowL1)
             layer2.append(rowL2)
@@ -120,9 +118,9 @@ class Filters:
         for row in range(rows):
             renglonAux = []
             for column in range( columns):
-                p1 = numpyArray[0][row][column]
+                p1 = numpyArray[2][row][column]
                 p2 = numpyArray[1][row][column]
-                p3 = numpyArray[2][row][column]
+                p3 = numpyArray[0][row][column]
                 columnaAux = [p1, p2, p3]
                 renglonAux.append(columnaAux)
             imgAux.append(renglonAux)
@@ -131,7 +129,7 @@ class Filters:
         return imgAux
 
     @decorateFunction
-    @separateAndJoinTest
+    @separateAndJoinDecorator
     def test(self, filename):
         print(f'Entramos dentro de test con el file: \n\t\t{filename}')
         
