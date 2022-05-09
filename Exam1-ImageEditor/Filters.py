@@ -58,23 +58,16 @@ class Filters:
     
     @decorateFunction
     @separateAndJoinDecorator
-    def test(self, array):
+    def test2(self, array):
+        layers, rows, columns = np.shape(array)
+        print(f'\nShape: {np.shape(array)}\n')
         
-        newArray = []
-        for layer in array:
-            newLayer = []
-            max = np.amax(layer)
-            #rows, columns = np.shape(layer)
-            
-            for row in layer:
-                newRow = []
-                for column in row:
-                    newValue = max - column
-                    newRow.append(newValue)
-                newLayer.append(newRow)
-            newArray.append(newLayer)            
-        
-        return newArray
+        for l in range(layers):
+            max = np.amax(array[l])
+            for r in range(rows):
+                for c in range(columns):
+                    array[l][r][c] = max - array[l][r][c]
+        return array
         
     
     def separateLayers(self, filename):
