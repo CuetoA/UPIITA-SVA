@@ -1,6 +1,6 @@
-#import face_recognition
+import face_recognition
 import os
-#import cv2 as cv
+import cv2 as cv
 
 curentPath = os.getcwd()
 completePath = f"{curentPath}/scripts/9-FacialRecognition/"
