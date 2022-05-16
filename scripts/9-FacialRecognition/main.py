@@ -42,7 +42,8 @@ if __name__ == '__main__':
             
             image = cv.imread(filename)
             face_locations, face_names = rc.recognizingFaces(image, known_face_encodings, known_face_names)
-            rc.displayResults(image, face_locations, face_names)
+            image = rc.displayResults(image, face_locations, face_names)
+            printImage(image)
             
 
 

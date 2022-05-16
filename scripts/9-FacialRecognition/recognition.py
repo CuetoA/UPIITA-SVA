@@ -1,5 +1,6 @@
 import os
 import cv2 as cv
+from PIL import Image
 import face_recognition
 
 
@@ -46,11 +47,6 @@ def recognizingFaces(image, known_face_encodings, known_face_names):
         if True in matches:
             first_match_index = matches.index(True)
             name = known_face_names[first_match_index]
-        
-        # face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-        # best_match_index = np.argmin(face_distances)
-        # if matches[best_match_index]:
-        #     name = known_face_names[best_match_index]
             
         face_names.append(name)
         print(name)
@@ -77,8 +73,9 @@ def displayResults(imgor, face_locations, face_names):
     dim = (width, height)
     imgor = cv.resize(imgor, dim)
     
-    cv.imshow('test', imgor)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
+    img = cv.cvtColor(imgor, cv.COLOR_BGR2RGB)
+    img = Image.fromarray(img)    
+    return img
     
+
 
