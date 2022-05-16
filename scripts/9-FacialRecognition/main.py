@@ -54,20 +54,46 @@ def displayResults(imgor, face_locations, face_names):
     cv.waitKey(0)
     cv.destroyAllWindows()
     
+
+def encodingFaces():
+    curentPath = os.getcwd()
+    completePath = f"{curentPath}/scripts/9-FacialRecognition/"
+    andres_imgf = completePath + 'knownFacesDir/Andres/andres1.jpg'
+    scar_imgf = completePath + 'knownFacesDir/Scarlette/scar1.jpg'
+    ceres_imgf = completePath + 'knownFacesDir/Ceres/ceres1.jpg'
     
+    
+    andres_image = face_recognition.load_image_file(andres_imgf)
+    andres_facencoding = face_recognition.face_encodings(andres_image)[0]
+    
+    scar_image = face_recognition.load_image_file(scar_imgf)
+    scar_facencoding = face_recognition.face_encodings(scar_image)[0]
+    
+    ceres_image = face_recognition.load_image_file(ceres_imgf)
+    ceres_facencoding = face_recognition.face_encodings(ceres_image)[0]
+    
+    known_face_encodings = [scar_facencoding, ceres_facencoding, andres_facencoding]
+    known_face_names = ["Scar", "Ceres", "Andrés"]
+       
+    
+    return known_face_encodings, known_face_names
+
+
+
 if __name__ == "__main__":
     
     curentPath = os.getcwd()
     completePath = f"{curentPath}/scripts/9-FacialRecognition/"
-    img1 = completePath + 'knownFacesDir/Scarlette/scar7.jpg'
+    # img1 = completePath + 'knownFacesDir/Scarlette/scar7.jpg'
     img2 = completePath + 'knownFacesDir/Scarlette/0_testGen4.jpg'
     
-    andres_image = face_recognition.load_image_file(img1)
-    andres_facencoding = face_recognition.face_encodings(andres_image)[0]
+    # andres_image = face_recognition.load_image_file(img1)
+    # andres_facencoding = face_recognition.face_encodings(andres_image)[0]
 
-    known_face_encodings = [andres_facencoding,]
-    known_face_names = ["Scar",]
+    # known_face_encodings = [andres_facencoding,]
+    # known_face_names = ["Scar",]
     
+    known_face_encodings, known_face_names = encodingFaces()
     imgor = cv.imread(img2)
     face_locations, face_names = recognizingFaces(imgor, known_face_encodings, known_face_names)
     displayResults(imgor, face_locations, face_names)
