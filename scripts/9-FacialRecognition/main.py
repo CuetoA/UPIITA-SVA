@@ -57,9 +57,17 @@ def displayResults(imgor, face_locations, face_names):
         cv.rectangle(imgor, (left, bottom - 35), (right, bottom), color, cv.FILLED)
         cv.putText(imgor, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
         
-
+    targetSize = 600
+    height = imgor.shape[0]
+    scale_percent = targetSize / height * 100
+    
+    
+    width = int(imgor.shape[1] * scale_percent / 100)
+    height = int(imgor.shape[0] * scale_percent / 100)
+    dim = (width, height)
 
     # Display the resulting image
+    imgor = cv.resize(imgor, dim)
     cv.imshow('test', imgor)
     cv.waitKey(0)
     cv.destroyAllWindows()
