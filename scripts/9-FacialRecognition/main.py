@@ -14,7 +14,7 @@ model = "cnn"  # convolutional neural network
 
 curentPath = os.getcwd()
 completePath = f"{curentPath}/scripts/9-FacialRecognition/"
-img1 = completePath + 'knownFacesDir/Scarlette/scar9.jpg'
+img1 = completePath + 'knownFacesDir/Scarlette/scar8.jpg'
 img2 = completePath + 'knownFacesDir/Scarlette/scar1.jpg'
 # knownFacesDir = completePath + "knownFacesDir"
 # unknownFacesDir = completePath + "unknownFacesDir/this"
@@ -24,6 +24,7 @@ img2 = completePath + 'knownFacesDir/Scarlette/scar1.jpg'
 andres_image = face_recognition.load_image_file(img1)
 andres_facencoding = face_recognition.face_encodings(andres_image)[0]
 
+## Termina de crear los encodings
 
 known_face_encodings = [
     andres_facencoding,
@@ -32,14 +33,22 @@ known_face_names = [
     "Scar",
 ]
 
+### Termina de ordenar los encodings
+
+
+
+
+#   Empieza el reconocimiento de rostros
+
+
 face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
 
-img = cv.imread(img2)
+imgor = cv.imread(img2)
 # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-img = img[:, :, ::-1]
+img = imgor[:, :, ::-1]
 
 face_locations = face_recognition.face_locations(img)
 face_encodings = face_recognition.face_encodings(img, face_locations)
@@ -67,6 +76,29 @@ for face_encoding in face_encodings:
     face_names.append(name)
 
 
-# cv.imshow('test', img)
-# cv.waitKey(0)
-# cv.destroyAllWindows()
+###  Termina el reconocimiento
+
+
+
+
+
+# Display the results
+for (top, right, bottom, left), name in zip(face_locations, face_names):
+    # Scale back up face locations since the img we detected in was scaled to 1/4 size
+    # top *= 4
+    # right *= 4
+    # bottom *= 4
+    # left *= 4
+
+    # Draw a box around the face
+    cv.rectangle(imgor, (left, top), (right, bottom), (0, 0, 255), 2)
+
+    # Draw a label with a name below the face
+    cv.rectangle(imgor, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
+    font = cv.FONT_HERSHEY_DUPLEX
+    cv.putText(imgor, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+# Display the resulting image
+cv.imshow('test', imgor)
+cv.waitKey(0)
+cv.destroyAllWindows()
