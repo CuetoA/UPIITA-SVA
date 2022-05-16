@@ -16,14 +16,15 @@ def recognizingFaces(image, known_face_encodings, known_face_names):
     for face_encoding in face_encodings:
         # # If a match was found in known_face_encodings, just use the first one.
         matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-        # if True in matches:
-        #     first_match_index = matches.index(True)
-        #     name = known_face_names[first_match_index]
+        if True in matches:
+            first_match_index = matches.index(True)
+            name = known_face_names[first_match_index]
         
-        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-        best_match_index = np.argmin(face_distances)
-        if matches[best_match_index]:
-            name = known_face_names[best_match_index]
+        # face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+        # best_match_index = np.argmin(face_distances)
+        # if matches[best_match_index]:
+        #     name = known_face_names[best_match_index]
+            
         face_names.append(name)
         print(name)
 
@@ -59,7 +60,7 @@ if __name__ == "__main__":
     curentPath = os.getcwd()
     completePath = f"{curentPath}/scripts/9-FacialRecognition/"
     img1 = completePath + 'knownFacesDir/Scarlette/scar7.jpg'
-    img2 = completePath + 'knownFacesDir/Scarlette/scar3.jpg'
+    img2 = completePath + 'knownFacesDir/Scarlette/0_testGen4.jpg'
     
     andres_image = face_recognition.load_image_file(img1)
     andres_facencoding = face_recognition.face_encodings(andres_image)[0]
