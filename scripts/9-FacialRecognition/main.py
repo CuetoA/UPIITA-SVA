@@ -4,16 +4,21 @@ import numpy as np
 import face_recognition
 
 
-curentPath = os.getcwd()
-completePath = f"{curentPath}/scripts/9-FacialRecognition/"
-img1 = completePath + 'knownFacesDir/Andres/andres1.jpg'
-img2 = img1
-# knownFacesDir = completePath + "knownFacesDir"
-# unknownFacesDir = completePath + "unknownFacesDir/this"
 tolerance = 0.8
 frameThikness = 3
 fontThikness = 2
 model = "cnn"  # convolutional neural network
+
+
+### Empieza a leer imágenes
+
+curentPath = os.getcwd()
+completePath = f"{curentPath}/scripts/9-FacialRecognition/"
+img1 = completePath + 'knownFacesDir/Scarlette/scar9.jpg'
+img2 = completePath + 'knownFacesDir/Scarlette/scar1.jpg'
+# knownFacesDir = completePath + "knownFacesDir"
+# unknownFacesDir = completePath + "unknownFacesDir/this"
+
 
 
 andres_image = face_recognition.load_image_file(img1)
@@ -24,7 +29,7 @@ known_face_encodings = [
     andres_facencoding,
 ]
 known_face_names = [
-    "La Cuetorra",
+    "Scar",
 ]
 
 face_locations = []
@@ -57,7 +62,7 @@ for face_encoding in face_encodings:
     best_match_index = np.argmin(face_distances)
     if matches[best_match_index]:
         name = known_face_names[best_match_index]
-        
+        print(name)
 
     face_names.append(name)
 
