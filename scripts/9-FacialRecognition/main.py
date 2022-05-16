@@ -15,9 +15,6 @@ def printImage(image):
 
 
 
-
-
-
 if __name__ == '__main__':
         
     completePath = f"{os.getcwd()}/scripts/9-FacialRecognition/imgs/"
@@ -25,9 +22,6 @@ if __name__ == '__main__':
     window = sg.Window("Cueto's Image Editor", layout(imgsList))
 
     known_face_encodings, known_face_names = rc.encodingFaces()
-
-
-
 
     while True:
         event, values = window.read()
